@@ -2,16 +2,9 @@ import { useState } from 'react';
 import './App.css';
 import WordService from './word.service';
 
-const defaultData = {
-  word: '',
-  definition: '',
-  isPalindrome: '',
-  isAlmostPalindrome: '',
-  points: ''
-}
 function App() {
   const [word, setWord] = useState('');
-  const [wordData, setWordData] = useState(defaultData);
+  const [wordData, setWordData] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   async function handleSubmit(){
@@ -23,7 +16,7 @@ function App() {
       }
     }catch(err){
       setErrorMessage(err.response.data.message);
-      setWordData(defaultData);
+      setWordData('');
     }
   }
 
@@ -38,16 +31,18 @@ function App() {
         <button className="btn btn-outline-secondary" type="button" onClick={handleSubmit}>Submit</button>
         <input type="text" className="form-control" placeholder="Enter a word..." onChange={(e)=>setWord(e.target.value)}/>
       </div>
-      {wordData.word && <div className="alert alert-info" role="alert">
-          <ul>
-            <li>Word: {wordData.word.word}</li>
-            <li>Definition: {wordData.word.definition}</li>
-            <li>Number of Unique Letters: {wordData.numberOfUniqueLetters}</li>
-            <li>Palindrome: {wordData.isPalindrome ? 'Yes' : 'No'}</li>
-            <li>Almost a Palindrome: {wordData.isAlmostPalindrome ? 'Yes' : 'No'}</li>
-            <li>Points: {wordData.points}</li>
-          </ul>
-      </div>}
+      {wordData.words && wordData.words.map((word, index)=>{
+        return (<div className="alert alert-info" role="alert" key={index}>
+        <ul>
+          <li>Word: {word.word}</li>
+          <li>Definition: {word.definition}</li>
+          <li>Number of Unique Letters: {wordData.numberOfUniqueLetters}</li>
+          <li>Palindrome: {wordData.isPalindrome ? 'Yes' : 'No'}</li>
+          <li>Almost a Palindrome: {wordData.isAlmostPalindrome ? 'Yes' : 'No'}</li>
+          <li>Points: {wordData.points}</li>
+        </ul>
+    </div>);
+      })}
       {errorMessage && <div className="alert alert-danger" role="alert">{errorMessage}</div>}
     </div>
   );
